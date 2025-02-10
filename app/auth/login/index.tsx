@@ -1,10 +1,11 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import { ThemedText } from '@/presentation/theme/components/ThemedText'
 
 const LoginScreen = () => {
   return (
     <View>
-      <Text>index</Text>
+      <ThemedText>Login screen</ThemedText>
     </View>
   )
 }
