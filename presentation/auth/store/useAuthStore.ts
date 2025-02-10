@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { User } from "@/core/auth/interfaces/user";
+import { authCheckStatus, authLogin } from "@/core/auth/actions/auth-actions";
 
 export type AuthStatus = "authenticated" | "unauthenticated" | "cheking";
 
@@ -10,18 +11,51 @@ export interface AuthState {
   login: (email: string, password: string) => Promise<Boolean>;
   checkStatus: () => Promise<void>;
   logout: () => Promise<void>;
+  changeStatus: (token?: string, user?: User) => boolean;
 }
 
-export const useAuthStore = create<AuthState>()((set) => ({
+export const useAuthStore = create<AuthState>()((set, get) => ({
   //properties
   status: "cheking",
   token: undefined,
   user: undefined,
 
-  //actions
-  login: async (email: string, password: string) => {
+  changeStatus: (token?: string, user?: User) => {
+    if (!token || !user) {
+      set({ status: "authenticated", token: undefined, user: undefined });
+      //todo llamar loout
+      return false;
+    }
+
+    set({
+      status: "authenticated",
+      token: token,
+      user: user,
+    });
+
     return true;
   },
-  checkStatus: async () => {},
-  logout: async () => {},
+
+  //actions
+  login: async (email: string, password: string) => {
+    const respo = await authLogin(email, password);
+
+    return get().changeStatus(respo?.token, respo?.user);
+  },
+
+  checkStatus: async () => {
+    const respo = await authCheckStatus();
+
+    get().changeStatus(respo?.token, respo?.user);
+  },
+
+  logout: async () => {
+    //clear token del secure storafe
+
+    set({
+      status: "unauthenticated",
+      token: undefined,
+      user: undefined,
+    });
+  },
 }));
