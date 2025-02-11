@@ -106,7 +106,7 @@ const LoginScreen = () => {
 
         <View style={style.linkContainer}>
           <ThemedText>No tienes cuenta?</ThemedText>
-          <ThemeLink href="/auth/register" style={{ marginStart: 5 }}>
+          <ThemeLink replace href="/auth/register" style={{ marginStart: 5 }}>
             Crear cuenta
           </ThemeLink>
         </View>

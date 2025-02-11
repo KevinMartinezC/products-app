@@ -60,7 +60,7 @@ const RegisterScreen = () => {
 
         <View style={style.linkContainer}>
           <ThemedText>Ya tienes cuenta?</ThemedText>
-          <ThemeLink href="/auth/login" style={{ marginStart: 5 }}>
+          <ThemeLink replace href="/auth/login" style={{ marginStart: 5 }}>
             Ingresar
           </ThemeLink>
         </View>
