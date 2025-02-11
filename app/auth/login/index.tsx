@@ -8,6 +8,8 @@ import React from "react";
 import { ThemedText } from "@/presentation/theme/components/ThemedText";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import ThemedTextInput from "@/presentation/theme/components/ThemedTextInput";
+import ThemedButton from "@/presentation/theme/components/ThemedButton";
+import ThemeLink from "@/presentation/theme/components/ThemeLink";
 
 const LoginScreen = () => {
   const { height } = useWindowDimensions();
@@ -20,22 +22,35 @@ const LoginScreen = () => {
           }}
         >
           <ThemedText type="title">Ingresar</ThemedText>
-          <ThemedText style={{color: 'gray'}}>Por favor ingrese para continuar</ThemedText>
+          <ThemedText style={{ color: "gray" }}>
+            Por favor ingrese para continuar
+          </ThemedText>
         </View>
 
         <View style={style.inputsContainer}>
           <ThemedTextInput
-          placeholder="Correo Electronico"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          icon="mail-outline"
+            placeholder="Correo Electronico"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            icon="mail-outline"
           />
           <ThemedTextInput
-          placeholder="Contrasena"
-          secureTextEntry
-          autoCapitalize="none"
-          icon="lock-closed-outline"
+            placeholder="Contrasena"
+            secureTextEntry
+            autoCapitalize="none"
+            icon="lock-closed-outline"
           />
+        </View>
+
+        <View style={style.buttonContainer}>
+          <ThemedButton icon="arrow-forward" children="Ingresar" />
+        </View>
+
+        <View style={style.linkContainer}>
+          <ThemedText>No tienes cuenta?</ThemedText>
+          <ThemeLink href="/auth/register" style={{ marginStart: 5 }}>
+            Crear cuenta
+          </ThemeLink>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -47,9 +62,17 @@ const style = StyleSheet.create({
     paddingHorizontal: 40,
   },
   inputsContainer: {
-    marginTop: 20
-  }
+    marginTop: 20,
+  },
+  linkContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonContainer: {
+    marginTop: 10,
+    marginBottom: 50,
+  },
 });
-
 
 export default LoginScreen;
