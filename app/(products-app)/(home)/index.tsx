@@ -11,7 +11,6 @@ const HomeScreen = () => {
       <ThemedText style={{fontFamily:'KanitRegular'}}>HomeScreen</ThemedText>
       <ThemedText style={{fontFamily:'KanitThin'}}>HomeScreen</ThemedText>
       <ThemedText>HomeScreen</ThemedText>
-
     </View>
   )
 }

@@ -3,18 +3,43 @@ import {
   KeyboardAvoidingView,
   useWindowDimensions,
   StyleSheet,
+  Alert,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { ThemedText } from "@/presentation/theme/components/ThemedText";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import ThemedTextInput from "@/presentation/theme/components/ThemedTextInput";
 import ThemedButton from "@/presentation/theme/components/ThemedButton";
 import ThemeLink from "@/presentation/theme/components/ThemeLink";
 import { useThemeColor } from "@/presentation/theme/hooks/useThemeColor";
+import { useAuthStore } from "@/presentation/auth/store/useAuthStore";
+import { router } from "expo-router";
+
+interface LoginData {
+  email: string;
+  password: string;
+}
 
 const LoginScreen = () => {
+  const { login } = useAuthStore();
+  const [isPosting, setIsPosting] = useState(false);
   const { height } = useWindowDimensions();
   const backgroundColor = useThemeColor({}, "background");
+  const { control, handleSubmit } = useForm<LoginData>();
+
+  const onLogin = async (data: LoginData) => {
+    setIsPosting(true);
+    const wasSuccesful = await login(data.email, data.password);
+    setIsPosting(false);
+
+    if (wasSuccesful) {
+      router.replace("/");
+      return;
+    }
+
+    Alert.alert("Error", "Usuario o contrasena no son validos");
+  };
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>
@@ -33,22 +58,50 @@ const LoginScreen = () => {
         </View>
 
         <View style={style.inputsContainer}>
-          <ThemedTextInput
-            placeholder="Correo Electronico"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            icon="mail-outline"
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <ThemedTextInput
+                placeholder="Correo Electronico"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                icon="mail-outline"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="email"
+            rules={{ required: true }}
+            defaultValue=""
           />
-          <ThemedTextInput
-            placeholder="Contrasena"
-            secureTextEntry
-            autoCapitalize="none"
-            icon="lock-closed-outline"
+
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <ThemedTextInput
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                placeholder="Contrasena"
+                secureTextEntry
+                autoCapitalize="none"
+                icon="lock-closed-outline"
+              />
+            )}
+            name="password"
+            rules={{ required: true }}
+            defaultValue=""
           />
         </View>
 
         <View style={style.buttonContainer}>
-          <ThemedButton icon="arrow-forward" children="Ingresar" />
+          <ThemedButton
+            icon="arrow-forward"
+            children="Ingresar"
+            disabled={isPosting}
+            onPress={handleSubmit(onLogin)}
+          />
         </View>
 
         <View style={style.linkContainer}>
