@@ -12,9 +12,10 @@ export class SecureStorageAdapter {
 
   static async getItem(key: string) {
     try {
-      await SecureStore.getItemAsync(key);
+      return await SecureStore.getItemAsync(key);
     } catch (error) {
-      Alert.alert("Error", "Error al obtener datos");
+      Alert.alert("Error", "Failed to get data");
+      return null;
     }
   }
 
