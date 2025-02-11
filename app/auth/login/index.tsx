@@ -10,12 +10,17 @@ import { ScrollView, TextInput } from "react-native-gesture-handler";
 import ThemedTextInput from "@/presentation/theme/components/ThemedTextInput";
 import ThemedButton from "@/presentation/theme/components/ThemedButton";
 import ThemeLink from "@/presentation/theme/components/ThemeLink";
+import { useThemeColor } from "@/presentation/theme/hooks/useThemeColor";
 
 const LoginScreen = () => {
   const { height } = useWindowDimensions();
+  const backgroundColor = useThemeColor({}, "background");
+
   return (
-    <KeyboardAvoidingView>
-      <ScrollView style={style.scrollViewStyle}>
+    <KeyboardAvoidingView style={{ flex: 1 }}>
+      <ScrollView
+        style={{ ...style.scrollViewStyle, backgroundColor: backgroundColor }}
+      >
         <View
           style={{
             paddingTop: height * 0.35,
