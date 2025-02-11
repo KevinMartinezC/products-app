@@ -1,5 +1,4 @@
-import { useColorScheme } from "@/presentation/theme/hooks/useColorScheme";
-import { useThemeColor } from "@/presentation/theme/hooks/useThemeColor";
+
 import {
   DarkTheme,
   DefaultTheme,
@@ -12,6 +11,10 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-reanimated";
+import { queryClient } from "@/core/utils/queryClient";
+import { useColorScheme } from "@/presentation/theme/hooks/useColorScheme";
+import { useThemeColor } from "@/presentation/theme/hooks/useThemeColor";
+import { QueryClientProvider } from "@tanstack/react-query";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -39,14 +42,18 @@ export default function RootLayout() {
     <GestureHandlerRootView
       style={{ backgroundColor: backgroundColor, flex: 1 }}
     >
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-          }}
-        ></Stack>
-        <StatusBar style="auto" />
-      </ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider
+          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        >
+          <Stack
+            screenOptions={{
+              headerShown: false,
+            }}
+          ></Stack>
+          <StatusBar style="auto" />
+        </ThemeProvider>
+      </QueryClientProvider>
     </GestureHandlerRootView>
   );
 }
