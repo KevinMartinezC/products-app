@@ -3,18 +3,53 @@ import {
   KeyboardAvoidingView,
   useWindowDimensions,
   StyleSheet,
+  Alert,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { ThemedText } from "@/presentation/theme/components/ThemedText";
-import { ScrollView, TextInput } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler";
 import ThemedTextInput from "@/presentation/theme/components/ThemedTextInput";
 import ThemedButton from "@/presentation/theme/components/ThemedButton";
 import ThemeLink from "@/presentation/theme/components/ThemeLink";
 import { useThemeColor } from "@/presentation/theme/hooks/useThemeColor";
+import { useAuthStore } from "@/presentation/auth/store/useAuthStore";
+
+interface RegisterData {
+  email: string;
+  password: string;
+  fullName: string;
+}
 
 const RegisterScreen = () => {
-  const { height } = useWindowDimensions();
   const backgroundColor = useThemeColor({}, "background");
+  const { height } = useWindowDimensions();
+  const [isPosting, setIsPosting] = useState(false);
+  const { control, handleSubmit, reset } = useForm<RegisterData>();
+  const { register } = useAuthStore();
+
+  const onRegister = async (data: RegisterData) => {
+    setIsPosting(true);
+    const wasSuccesful = await register(
+      data.email,
+      data.password,
+      data.fullName
+    );
+    setIsPosting(false);
+
+    if (wasSuccesful) {
+      reset();
+      Alert.alert(
+        "🎉 ¡Registro Exitoso!",
+        "Tu cuenta ha sido creada con éxito. Ahora puedes iniciar sesión."
+      );
+      return;
+    }
+    Alert.alert(
+      "⚠️ Error en el Registro",
+      "No se pudo crear la cuenta. Verifica que los datos sean correctos e intenta nuevamente."
+    );
+  };
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>
@@ -33,29 +68,68 @@ const RegisterScreen = () => {
         </View>
 
         <View style={style.inputsContainer}>
-          <ThemedTextInput
-            placeholder="Nombre completo"
-            keyboardType="email-address"
-            autoCapitalize="words"
-            icon="person"
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <ThemedTextInput
+                placeholder="Nombre completo"
+                keyboardType="email-address"
+                autoCapitalize="words"
+                icon="person-outline"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="fullName"
+            rules={{ required: true }}
+            defaultValue=""
           />
 
-          <ThemedTextInput
-            placeholder="Correo Electronico"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            icon="mail-outline"
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <ThemedTextInput
+                placeholder="Correo Electronico"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                icon="mail-outline"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="email"
+            rules={{ required: true }}
+            defaultValue=""
           />
-          <ThemedTextInput
-            placeholder="Contrasena"
-            secureTextEntry
-            autoCapitalize="none"
-            icon="lock-closed-outline"
+
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <ThemedTextInput
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                placeholder="Contrasena"
+                secureTextEntry
+                autoCapitalize="none"
+                icon="lock-closed-outline"
+              />
+            )}
+            name="password"
+            rules={{ required: true }}
+            defaultValue=""
           />
         </View>
 
         <View style={style.buttonContainer}>
-          <ThemedButton icon="arrow-forward" children="Crear cuenta" />
+          <ThemedButton
+            icon="arrow-forward"
+            children="Crear cuenta"
+            disabled={isPosting}
+            onPress={handleSubmit(onRegister)}
+          />
         </View>
 
         <View style={style.linkContainer}>

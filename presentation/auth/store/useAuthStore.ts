@@ -1,6 +1,10 @@
 import { create } from "zustand";
 import { User } from "@/core/auth/interfaces/user";
-import { authCheckStatus, authLogin } from "@/core/auth/actions/auth-actions";
+import {
+  authCheckStatus,
+  authLogin,
+  authRegister,
+} from "@/core/auth/actions/auth-actions";
 import { SecureStorageAdapter } from "@/helpers/adapters/secure-storage.adapter";
 
 export type AuthStatus = "authenticated" | "unauthenticated" | "cheking";
@@ -10,6 +14,11 @@ export interface AuthState {
   token?: string;
   user?: User;
   login: (email: string, password: string) => Promise<Boolean>;
+  register: (
+    email: string,
+    password: string,
+    fullName: string
+  ) => Promise<Boolean>;
   checkStatus: () => Promise<void>;
   logout: () => Promise<void>;
   changeStatus: (token?: string, user?: User) => Promise<boolean>;
@@ -43,6 +52,11 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
     const respo = await authLogin(email, password);
 
     return get().changeStatus(respo?.token, respo?.user);
+  },
+
+  register: async (email: string, password: string, fullName: string) => {
+    const resp = await authRegister(email, password, fullName);
+    return get().changeStatus(resp?.token, resp?.user);
   },
 
   checkStatus: async () => {

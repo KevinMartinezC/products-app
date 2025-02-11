@@ -42,7 +42,7 @@ export const authLogin = async (email: string, password: string) => {
 
     return returnUserToken(data);
   } catch (error) {
-    return null
+    return null;
   }
 };
 
@@ -55,4 +55,21 @@ export const authCheckStatus = async () => {
   }
 };
 
-//TAREA HACER EL REGISTER
+export const authRegister = async (
+  email: string,
+  password: string,
+  fullName: string
+) => {
+  email = email.toLowerCase();
+
+  try {
+    const { data } = await productsApi.post<AuthResponse>("/auth/register", {
+      email,
+      password,
+      fullName,
+    });
+    return returnUserToken(data);
+  } catch (error) {
+    return null;
+  }
+};

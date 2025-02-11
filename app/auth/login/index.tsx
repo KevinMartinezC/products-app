@@ -8,7 +8,7 @@ import {
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { ThemedText } from "@/presentation/theme/components/ThemedText";
-import { ScrollView, TextInput } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler";
 import ThemedTextInput from "@/presentation/theme/components/ThemedTextInput";
 import ThemedButton from "@/presentation/theme/components/ThemedButton";
 import ThemeLink from "@/presentation/theme/components/ThemeLink";
