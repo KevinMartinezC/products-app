@@ -1,18 +1,32 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { ThemedText } from '@/presentation/theme/components/ThemedText'
-import { useThemeColor } from '@/presentation/theme/hooks/useThemeColor'
+import { View, Text, StyleSheet } from "react-native";
+import React from "react";
+import { useThemeColor } from "@/presentation/theme/hooks/useThemeColor";
+import { useProducts } from "@/presentation/products/hooks/useProducts";
+import LoadingIndicator from "@/presentation/theme/components/LoadingIndicator";
+import ProductList from "@/presentation/products/components/ProductList";
 
 const HomeScreen = () => {
-    const primary = useThemeColor({},'primary')
-  return (
-    <View style={{paddingTop: 100, paddingHorizontal: 20}}>
-      <ThemedText style={{fontFamily:'KanitBold', color: primary}}>HomeScreen</ThemedText>
-      <ThemedText style={{fontFamily:'KanitRegular'}}>HomeScreen</ThemedText>
-      <ThemedText style={{fontFamily:'KanitThin'}}>HomeScreen</ThemedText>
-      <ThemedText>HomeScreen</ThemedText>
-    </View>
-  )
-}
+  const { productsQuery, loadNextPage } = useProducts();
+  const primary = useThemeColor({}, "primary");
 
-export default HomeScreen
+  if (productsQuery.isLoading) {
+    return <LoadingIndicator />;
+  }
+
+  return (
+    <View style={style.container}>
+      <ProductList
+        products={productsQuery.data?.pages.flatMap((page) => page) ?? []}
+        loadNextPage={loadNextPage}
+      />
+    </View>
+  );
+};
+
+export default HomeScreen;
+
+const style = StyleSheet.create({
+  container: {
+    paddingHorizontal: 10,
+  },
+});
