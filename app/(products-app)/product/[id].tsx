@@ -1,12 +1,6 @@
-import {
-  View,
-  Text,
-  KeyboardAvoidingView,
-  Platform,
-  StyleSheet,
-} from "react-native";
+import { KeyboardAvoidingView, Platform, StyleSheet } from "react-native";
 import React, { useEffect } from "react";
-import { Redirect, useLocalSearchParams, useNavigation } from "expo-router";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
 import { ThemedView } from "@/presentation/theme/components/ThemedView";
@@ -14,6 +8,7 @@ import ThemedTextInput from "@/presentation/theme/components/ThemedTextInput";
 import useProduc from "@/presentation/products/hooks/useProduc";
 import LoadingIndicator from "@/presentation/theme/components/LoadingIndicator";
 import ProductImages from "@/presentation/products/components/ProductImages";
+import ThemedButtonGroup from "@/presentation/theme/components/ThemeButtonGroup";
 
 const ProducScreen = () => {
   const { id } = useLocalSearchParams();
@@ -21,7 +16,6 @@ const ProducScreen = () => {
 
   const navigation = useNavigation();
   useEffect(() => {
-    //Todo colocar nombre producto
     navigation.setOptions({
       headerRight: () => <Ionicons name="camera-outline" size={25} />,
     });
@@ -46,7 +40,7 @@ const ProducScreen = () => {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <ScrollView>
-        <ProductImages images={product.images }/>
+        <ProductImages images={product.images} />
         <ThemedView style={style.container}>
           <ThemedTextInput placeholder="Titulo" style={style.titleInputt} />
           <ThemedTextInput placeholder="Slug" style={style.titleInputt} />
@@ -65,6 +59,13 @@ const ProducScreen = () => {
           <ThemedTextInput
             placeholder="Inventario"
             containerStyle={style.priceInput}
+          />
+        </ThemedView>
+        <ThemedView style={style.buttonGroupContainer}>
+          <ThemedButtonGroup
+            options={["XS", "S", "M", "L", "XL", "XXL", "XXL"]}
+            selectedOptions={product.sizes}
+            onSelect={(options) => console.log({ options })}
           />
         </ThemedView>
       </ScrollView>
@@ -90,5 +91,8 @@ const style = StyleSheet.create({
   },
   priceInput: {
     flex: 1,
+  },
+  buttonGroupContainer: {
+    marginHorizontal: 10,
   },
 });
