@@ -16,7 +16,7 @@ import { Product } from "@/core/products/interfaces/product.interface";
 const ProducScreen = () => {
   const navigation = useNavigation();
   const { id } = useLocalSearchParams();
-  const { productQuery, fetchProduct } = useProduc(`${id}`);
+  const { productQuery, productUpdate, fetchProduct } = useProduc(`${id}`);
   const { control, handleSubmit } = useForm<Product>({
     defaultValues: async () => {
       const { data } = await fetchProduct();
@@ -25,8 +25,8 @@ const ProducScreen = () => {
   });
 
   const onSave = async (data: Product) => {
-    console.log('send data',data)
-  }
+    productUpdate.mutate(data);
+  };
 
   useEffect(() => {
     navigation.setOptions({
@@ -160,7 +160,9 @@ const ProducScreen = () => {
           />
         </ThemedView>
         <View style={style.buttonContainer}>
-          <ThemedButton icon="save-outline" onPress={handleSubmit(onSave)}>Guardar</ThemedButton>
+          <ThemedButton icon="save-outline" onPress={handleSubmit(onSave)}>
+            Guardar
+          </ThemedButton>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
