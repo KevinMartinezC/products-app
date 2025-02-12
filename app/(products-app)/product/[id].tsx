@@ -13,6 +13,7 @@ import { ThemedView } from "@/presentation/theme/components/ThemedView";
 import ThemedTextInput from "@/presentation/theme/components/ThemedTextInput";
 import useProduc from "@/presentation/products/hooks/useProduc";
 import LoadingIndicator from "@/presentation/theme/components/LoadingIndicator";
+import ProductImages from "@/presentation/products/components/ProductImages";
 
 const ProducScreen = () => {
   const { id } = useLocalSearchParams();
@@ -34,17 +35,18 @@ const ProducScreen = () => {
     }
   }, [productQuery.data]);
 
-  if (productQuery.isLoading) {
-    <LoadingIndicator />;
+  if (productQuery.isLoading || !productQuery.data) {
+    return <LoadingIndicator />;
   }
 
-  const product = productQuery.data!;
+  const product = productQuery.data;
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <ScrollView>
+        <ProductImages images={product.images }/>
         <ThemedView style={style.container}>
           <ThemedTextInput placeholder="Titulo" style={style.titleInputt} />
           <ThemedTextInput placeholder="Slug" style={style.titleInputt} />
