@@ -3,7 +3,7 @@ import { useAuthStore } from "@/presentation/auth/store/useAuthStore";
 import { useThemeColor } from "@/presentation/theme/hooks/useThemeColor";
 import { Redirect, Stack } from "expo-router";
 import React, { useEffect } from "react";
-import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
+import { View, ActivityIndicator, StyleSheet } from "react-native";
 
 const CheckAuthenticationLayout = () => {
   const { status, checkStatus } = useAuthStore();

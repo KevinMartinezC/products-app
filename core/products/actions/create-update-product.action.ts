@@ -33,6 +33,6 @@ const createProduct = async (product: Partial<Product>) => {
     });
     return data;
   } catch (error) {
-    throw new Error("Error al crear el producto");
+    throw new Error(`Error al crear el producto ${error}`);
   }
 };
