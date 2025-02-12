@@ -1,4 +1,4 @@
-import { View, Text, TextInputProps, StyleSheet } from "react-native";
+import { View, Text, TextInputProps, StyleSheet, ViewStyle } from "react-native";
 import React, { useRef, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { TextInput } from "react-native-gesture-handler";
@@ -6,9 +6,10 @@ import { useThemeColor } from "../hooks/useThemeColor";
 
 interface Props extends TextInputProps {
   icon?: keyof typeof Ionicons.glyphMap;
+  containerStyle?: ViewStyle
 }
 
-const ThemedTextInput = ({ icon, ...rest }: Props) => {
+const ThemedTextInput = ({ icon, containerStyle, ...rest }: Props) => {
   const primayColor = useThemeColor({}, "primary");
   const textColor = useThemeColor({}, "text");
   const [isActive, setIsActive] = useState(false);
@@ -16,10 +17,12 @@ const ThemedTextInput = ({ icon, ...rest }: Props) => {
 
   return (
     <View
-      style={{
+      style={[
+        {
         ...styles.border,
         borderColor: isActive ? primayColor : "#ccc",
-      }}
+      }, containerStyle,
+    ]}
       onTouchStart={() => inputRef.current?.focus()}
     >
       {icon && (
