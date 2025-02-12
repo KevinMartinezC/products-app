@@ -5,6 +5,7 @@ const useProduc = (productId: string) => {
   const productQuery = useQuery({
     queryKey: ["product", productId],
     queryFn: () => getProductById(productId),
+    enabled: false,
     staleTime: 1000 * 60 * 60,
   });
   //mutacion
@@ -12,6 +13,7 @@ const useProduc = (productId: string) => {
   //mantener el id del producto en caso de ser uno nuevo
   return {
     productQuery,
+    fetchProduct: productQuery.refetch,
   };
 };
 

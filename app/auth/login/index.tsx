@@ -7,14 +7,14 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { ThemedText } from "@/presentation/theme/components/ThemedText";
+import { router } from "expo-router";
 import { ScrollView } from "react-native-gesture-handler";
+import { ThemedText } from "@/presentation/theme/components/ThemedText";
 import ThemedTextInput from "@/presentation/theme/components/ThemedTextInput";
 import ThemedButton from "@/presentation/theme/components/ThemedButton";
 import ThemeLink from "@/presentation/theme/components/ThemeLink";
 import { useThemeColor } from "@/presentation/theme/hooks/useThemeColor";
 import { useAuthStore } from "@/presentation/auth/store/useAuthStore";
-import { router } from "expo-router";
 
 interface LoginData {
   email: string;

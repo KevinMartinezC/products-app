@@ -7,7 +7,7 @@ export interface Product {
     description: string;
     slug:        string;
     stock:       number;
-    sizes:       Size[];
+    sizes:       string[];
     gender:      Gender;
     tags:        string[];
     images:      string[];
@@ -19,13 +19,4 @@ export enum Gender {
     Men = "men",
     Unisex = "unisex",
     Women = "women",
-}
-
-export enum Size {
-    L = "L",
-    M = "M",
-    S = "S",
-    Xl = "XL",
-    Xs = "XS",
-    Xxl = "XXL",
 }
