@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, Platform, StyleSheet } from "react-native";
+import { KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
 import React, { useEffect } from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -9,6 +9,7 @@ import useProduc from "@/presentation/products/hooks/useProduc";
 import LoadingIndicator from "@/presentation/theme/components/LoadingIndicator";
 import ProductImages from "@/presentation/products/components/ProductImages";
 import ThemedButtonGroup from "@/presentation/theme/components/ThemeButtonGroup";
+import ThemedButton from "@/presentation/theme/components/ThemedButton";
 
 const ProducScreen = () => {
   const { id } = useLocalSearchParams();
@@ -67,7 +68,16 @@ const ProducScreen = () => {
             selectedOptions={product.sizes}
             onSelect={(options) => console.log({ options })}
           />
+
+          <ThemedButtonGroup
+            options={["kid", "men", "women", "unisex"]}
+            selectedOptions={[product.gender]}
+            onSelect={(options) => console.log({ options })}
+          />
         </ThemedView>
+        <View style={style.buttonContainer}>
+          <ThemedButton icon="save-outline">Guardar</ThemedButton>
+        </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -94,5 +104,10 @@ const style = StyleSheet.create({
   },
   buttonGroupContainer: {
     marginHorizontal: 10,
+  },
+  buttonContainer: {
+    marginHorizontal: 10,
+    marginBottom: 50,
+    marginTop: 20,
   },
 });
