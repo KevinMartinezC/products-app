@@ -1,5 +1,5 @@
 import { View, Text, TextInputProps, StyleSheet, ViewStyle } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { TextInput } from "react-native-gesture-handler";
 import { useThemeColor } from "../hooks/useThemeColor";
@@ -9,12 +9,11 @@ interface Props extends TextInputProps {
   containerStyle?: ViewStyle
 }
 
-const ThemedTextInput = ({ icon, containerStyle, ...rest }: Props) => {
+const ThemedTextInput = ({ icon, containerStyle, style, ...rest }: Props) => {
   const primayColor = useThemeColor({}, "primary");
   const textColor = useThemeColor({}, "text");
   const [isActive, setIsActive] = useState(false);
-  const inputRef = useRef<TextInput>(null);
-
+    
   return (
     <View
       style={[
@@ -23,7 +22,6 @@ const ThemedTextInput = ({ icon, containerStyle, ...rest }: Props) => {
         borderColor: isActive ? primayColor : "#ccc",
       }, containerStyle,
     ]}
-      onTouchStart={() => inputRef.current?.focus()}
     >
       {icon && (
         <Ionicons
@@ -34,11 +32,10 @@ const ThemedTextInput = ({ icon, containerStyle, ...rest }: Props) => {
         />
       )}
       <TextInput
-        ref={inputRef}
         placeholderTextColor="#5c5c5c"
         onFocus={() => setIsActive(true)}
         onBlur={() => setIsActive(false)}
-        style={{ ...styles.input, color: textColor }}
+        style={[styles.input, style , { color: textColor }]}
         {...rest}
       />
     </View>

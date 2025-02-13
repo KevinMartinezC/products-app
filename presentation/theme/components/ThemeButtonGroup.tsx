@@ -10,6 +10,8 @@ interface Props {
 
 const ThemedButtonGroup = ({ options, selectedOptions, onSelect }: Props) => {
   const primaryColor = useThemeColor({}, "primary");
+  const textColor = useThemeColor({}, "text");
+
   return (
     <View style={style.container}>
       {options.map((option) => (
@@ -28,6 +30,7 @@ const ThemedButtonGroup = ({ options, selectedOptions, onSelect }: Props) => {
             adjustsFontSizeToFit
             style={[
               style.buttonText,
+              { color: textColor },
               selectedOptions.includes(option) && style.selectedButtonText,
             ]}
           >

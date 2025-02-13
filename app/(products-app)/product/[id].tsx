@@ -29,13 +29,6 @@ const ProducScreen = () => {
   };
 
   useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => <Ionicons name="camera-outline" size={25} />,
-    });
-    return () => console.log("cleaninng");
-  }, []);
-
-  useEffect(() => {
     if (productQuery.data) {
       navigation.setOptions({
         title: productQuery.data.title,
@@ -93,7 +86,6 @@ const ProducScreen = () => {
             render={({ field: { onChange, value } }) => (
               <ThemedTextInput
                 placeholder="Descripcion"
-                style={style.titleInputt}
                 multiline
                 numberOfLines={5}
                 value={value}
